@@ -1,0 +1,169 @@
+@startuml
+
+entity Empleado {
+  +ID_Empleado : int
+  Rol : int
+  Primer_Nombre : string
+  Segundo_Nombre : string
+  Primer_Apellido : string
+  Segundo_Apellido : string
+  Tipo_Identificacion : string
+  Numero_Identificacion : string
+  Correo : string
+}
+
+entity Rol {
+  +ID_Rol : int
+  Nombre_Rol : string
+}
+
+entity MetodosPorRol {
+  +ID_Rol : int
+  ID_Opcion : int
+}
+
+entity Metodo {
+  +ID_Opcion : int
+  Nombre_Metodo : string
+}
+
+entity Cliente {
+  +ID_Cliente : int
+  Tipo_Identificacion : string
+  Numero_Identificacion : string
+  Direccion : string
+  Telefono : string
+  Medio_Pago_Preferido : string
+  Correo : string
+}
+
+entity Producto {
+  +ID_Producto : int
+  Nombre : string
+  Categoria : int
+  Precio : decimal
+  Referencia : string
+}
+
+entity CategoriaProducto {
+  +Categoria_id : int
+  Nombre : string
+}
+
+entity Pedido {
+  +ID_Pedido : int
+  Medio_Pago : string
+  No_Pedido : string
+  Datos_Cliente : string
+  Fecha : date
+  Valor : decimal
+  Estado : int
+  Comision_domiciliario : decimal
+}
+
+entity ProductosPorPedido {
+    +ID_Pedido : int
+    +ID_Producto : int  
+    Valor : decimal
+    Cantidad : int
+}
+
+entity EstadosPedido {
+  +ID_Estado : int
+  Estado : string
+  Observaciones : string
+}
+
+entity Domiciliario {
+  +ID_Domiciliario : int
+  Tipo_Identificacion: string 
+  Identificacion : string
+  Nombre : string
+  Cedula : string
+  Direccion : string
+  Viajes : int
+  Calificacion : int
+}
+
+entity Tienda {
+  +ID_Tienda : int
+  Nombre : string
+  Ubicacion : string
+  Ciudad : string
+  Codigo : string
+}
+
+entity MetodoPago {
+  +ID_MetodoPago : int
+  ID_Cliente : int
+  Nombre : string
+  Tipo : string
+  Estado : string
+  Datos_pago : string
+}
+
+entity Proveedor {
+  +ID_Proveedor : int
+  Tipo_Identificacion : string
+  Numero_Identificacion : string
+  Nombre : string
+  Categoria : string
+  Actividad_economica : string
+  Direccion_principal : string
+  Ciudad : string
+}
+
+entity Factura {
+  +ID_Factura : int
+  ID_Pedido : int
+  ID_MetodoPago : int
+  Monto : decimal
+}
+
+entity ProductosPorTienda_Inventario {
+    +ID_Tienda : int
+    +ID_Producto : int
+    Cantidad : int
+    ID_Proveedor
+}
+
+entity DireccionEntrega {
+    +ID_Direccion_entrega : int
+    Codigo_DANE : string
+    Coordenadas_geograficas : string
+    Direccion : string
+    Datos_adicionales : string
+    Ciudad : string
+    Barrio : string 
+}
+
+
+Empleado }|--|| Rol : "tiene"
+Producto }|--|| CategoriaProducto : "es de"
+Pedido }|--|| Cliente : "realizado por"
+MetodosPorRol }|--|| Rol
+MetodosPorRol }|--|| Metodo
+Pedido  }|--|| EstadosPedido : "tiene estado"
+ProductosPorPedido  }|--|| Pedido : "Tiene"
+ProductosPorPedido }|--|| Producto : "Tiene"
+
+Tienda ||--|{ ProductosPorTienda_Inventario  : "Tiene" 
+Producto ||--|{ ProductosPorTienda_Inventario : "Esta"
+ProductosPorTienda_Inventario ||--|{ Proveedor
+
+Cliente ||--|{ DireccionEntrega : "Puede registrar"
+Pedido }|--|| DireccionEntrega : "Tiene"
+
+
+
+Domiciliario ||--|{ Pedido : "Hace"
+
+Pedido ||--o| Factura
+
+Cliente ||--|{ MetodoPago
+Factura }|--|| MetodoPago
+
+
+
+
+@enduml
